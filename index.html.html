@@ -1,0 +1,106 @@
+
+<!DOCTYPE html>
+<html lang="gu">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>LocalJobs Registration</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>LocalJobs - ફ્રી નોકરી નોંધણી ફોર્મ</h1>
+    <form id="jobForm">
+      <label>નામ:</label>
+      <input type="text" name="name" required />
+
+      <label>ઉંમર:</label>
+      <input type="number" name="age" required />
+
+      <label>લિંગ:</label>
+      <select name="gender" required>
+        <option value="">પસંદ કરો</option>
+        <option value="પુરુષ">પુરુષ</option>
+        <option value="સ્ત્રી">સ્ત્રી</option>
+        <option value="અન્ય">અન્ય</option>
+      </select>
+
+      <label>શૈક્ષણિક લાયકાત:</label>
+      <input type="text" name="education" />
+
+      <label>કૌશલ્યો:</label>
+      <input type="text" name="skills" />
+
+      <label>અનુભવ (વર્ષોમાં):</label>
+      <input type="number" name="experience" />
+
+      <label>મોબાઇલ નંબર:</label>
+      <input type="tel" name="phone" required />
+
+      <label>સરનામું:</label>
+      <textarea name="address" rows="2"></textarea>
+
+      <label>ગામ/શહેર:</label>
+      <input type="text" name="village" />
+
+      <label>તાલુકો:</label>
+      <input type="text" name="taluko" />
+
+      <label>જિલ્લો:</label>
+      <input type="text" name="jillo" />
+
+      <label>રાજ્ય:</label>
+      <input type="text" name="rajya" />
+
+      <label>તમે કઈ નોકરીમાં રસ ધરાવો છો?</label>
+      <textarea name="job_interest" rows="2"></textarea>
+
+      <button type="submit">ફોર્મ સબમિટ કરો</button>
+    </form>
+    <p id="successMsg"></p>
+  </div>
+  <footer>&copy; 2025 Jan Sahyog Vikas Trust - LocalJobs</footer>
+
+  <script>
+    const form = document.getElementById("jobForm");
+    const msg = document.getElementById("successMsg");
+
+    form.addEventListener("submit", function(e) {
+      e.preventDefault();
+      const uid = Math.floor(100000 + Math.random() * 900000); // 6-digit ID
+
+      const formData = {
+        name: form.name.value,
+        age: form.age.value,
+        gender: form.gender.value,
+        education: form.education.value,
+        skills: form.skills.value,
+        experience: form.experience.value,
+        phone: form.phone.value,
+        address: form.address.value,
+        village: form.village.value,
+        taluko: form.taluko.value,
+        jillo: form.jillo.value,
+        rajya: form.rajya.value,
+        job_interest: form.job_interest.value,
+        uid: uid
+      };
+
+      fetch("https://script.google.com/macros/s/PASTE_YOUR_DEPLOYED_WEBAPP_URL_HERE/exec", {
+        method: "POST",
+        body: JSON.stringify(formData),
+        headers: { "Content-Type": "application/json" }
+      })
+      .then(res => res.text())
+      .then(data => {
+        msg.innerHTML = "તમારું ફોર્મ સફળતાપૂર્વક સબમિટ થયું. તમારું યુનિક નંબર છે: " + uid;
+        form.reset();
+      })
+      .catch(err => {
+        msg.innerHTML = "સબમિટ થવામાં ભૂલ: " + err.message + "<br>ખાતરી કરો કે તમારું Web App URL સાચું છે અને Script જાહેર રીતે ખુલ્લું છે.";
+        console.error("Fetch Error:", err);
+      });
+    });
+  </script>
+</body>
+</html>
